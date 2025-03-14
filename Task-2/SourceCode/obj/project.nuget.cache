@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "QBiIZnYifHg=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\01fer\\Desktop\\Intern-Itransition\\Task-2\\SourceCode\\SourceCode.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\01fer\\.nuget\\packages\\bouncycastle.netcore\\2.2.1\\bouncycastle.netcore.2.2.1.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,15 @@
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\bin\Debug\net9.0\OOP.exe
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\bin\Debug\net9.0\OOP.deps.json
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\bin\Debug\net9.0\OOP.runtimeconfig.json
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\bin\Debug\net9.0\OOP.dll
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\bin\Debug\net9.0\OOP.pdb
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\OOP.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\OOP.AssemblyInfoInputs.cache
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\OOP.AssemblyInfo.cs
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\OOP.csproj.CoreCompileInputs.cache
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\OOP.sourcelink.json
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\OOP.dll
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\refint\OOP.dll
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\OOP.pdb
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\OOP.genruntimeconfig.cache
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\OOP\obj\Debug\net9.0\ref\OOP.dll
