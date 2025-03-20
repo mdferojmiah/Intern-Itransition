@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 public class RandomGenerator{
-    // this class if for generating random number and hash
+    // this class is for generating random number and hash
     public static (int number, byte[] key, string hmac) GenerateRandom(int range){
         using(RandomNumberGenerator rng = RandomNumberGenerator.Create()){
             byte[] key = new byte[32];

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 public class GameManager{
-    //this class if for managing the whole game
+    //this class is for managing the whole game
     private List<Dice> diceList;
     private Random random = new Random();
 

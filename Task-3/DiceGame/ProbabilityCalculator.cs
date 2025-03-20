@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 public class ProbabilityCalculator{
+    // this class is for calculating probability
     public static double CalculateProbability(Dice userDice, Dice computerDice){
         int userWin = 0;
         int totalRolls = userDice.Faces.Length * computerDice.Faces.Length;

@@ -4,6 +4,7 @@ using ConsoleTableExt;
 
 public class TableGenerator
 {
+    //this clas is for the generating the table using ConsoleTableExt
     public static void DisplayTable(List<Dice> diceList)
     {
         var tableData = new List<List<object>>();
@@ -34,7 +35,7 @@ public class TableGenerator
         }
 
         ConsoleTableBuilder.From(tableData)
-            .WithTitle("Probability of the win fоr the user:", ConsoleColor.Green)
+            .WithTitle("Probability of the win for the user:", ConsoleColor.Green)
             .ExportAndWriteLine();
     }
 }
