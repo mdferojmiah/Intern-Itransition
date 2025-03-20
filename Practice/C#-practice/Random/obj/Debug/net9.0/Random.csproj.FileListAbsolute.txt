@@ -1,0 +1,15 @@
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\bin\Debug\net9.0\Random.exe
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\bin\Debug\net9.0\Random.deps.json
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\bin\Debug\net9.0\Random.runtimeconfig.json
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\bin\Debug\net9.0\Random.dll
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\bin\Debug\net9.0\Random.pdb
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\Random.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\Random.AssemblyInfoInputs.cache
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\Random.AssemblyInfo.cs
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\Random.csproj.CoreCompileInputs.cache
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\Random.sourcelink.json
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\Random.dll
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\refint\Random.dll
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\Random.pdb
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\Random.genruntimeconfig.cache
+C:\Users\01fer\Desktop\Intern-Itransition\Practice\C#-practice\Random\obj\Debug\net9.0\ref\Random.dll

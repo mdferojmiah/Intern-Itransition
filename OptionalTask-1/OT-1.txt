@@ -1,0 +1,40 @@
+Hi! I propose you an ***optional*** task (you are NOT required to implement it, but if you have some free time, you can try for a _small_ amount of additional points). Try to write code in your programming language that outputs correct code in the programming language of another group, which in turn, when run, outputs the original code. For example, if you are in JavaScript group, write a JavaScript code that outputs C# code that outputs _the original_ JavaScript code. The solution is ***only one file***.
+
+You cannot create some additional files with code, create a project file that generates additional files (of course, you may have some project just to compile and run the code). _You cannot access the file system to read or write the source code of the current file, the original file, or any file at all. Don't access current source code via some kind of API, etc._ Do it the _hard way_.
+
+Again, I repeat, this is an OPTIONAL task. ***If you have no idea how to do it, you can ignore it. *** 
+
+The ability to solve such problems is not an important skill (it's in the domain of the "mad skills," not "do your job" skills).
+
+If you solve it, send the link to the solution (e.g., to a public Github repository or anything that does not require using an account) and video or screenshots from the terminal demonstrating all necessary steps to verify it works as expected (p.lebedev@itransition.com).
+
+For example, if your original Ruby code is in the file `solution.rb` that generates Python code, you need to demonstrate something like this:
+```markdown
+> ruby solution.rb > solution.py
+> python3 solution.py > solution2.rb
+> diff solution.rb solution2.rb
+> 
+```
+> Note that the result of the second code execution should be _identical_ to the first file.
+
+You need to to it for your language and other group language, not Ruby and Python.
+
+Of course, if you will be able to use 3 or 4 languages (e.g., JavaScript -> C# -> PHP -> back to original JavaScript) it will be really cool (but try not to spend a lot of time; it can be not the easiest task).
+
+ONE MORE TIME: solution is a single file (and probalby some project to run).
+
+PLEASE, DON'T PANIC IF YOU DON'T UNDERSTAND HOW TO IMPLEMENT THIS TASK. IT'S STRICTLY FOR "TRUE HARDCODE ENGINEERS." RELAX. SOLVE OTHER TASKS, WHICH HAVE SOME EDUCATIONAL IMPACT.
+
+Just a small note about C#. As specified in the task above, you may create a trivial separate `.csproj` just to run your code (something like the example below). It's not related to C# at all, it's just how dotnet compiles code (some time ago you could just write something like `mcs solution.js`).
+
+```
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="solution.js" />
+  </ItemGroup>
+</Project>
+```

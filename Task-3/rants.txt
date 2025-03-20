@@ -1,0 +1,78 @@
+**OK, so what is a hash function?**
+
+First of all, it's not the same as "hash code" used in Java hashCode() method or in C# GetHashCode() method — they are somehow very distantly related, but it's a story for another time.
+
+Formally, a hash function is an algorithm that takes input data of any size — for the sake of simplicity, I will describe function input as a string, but most implementations work with byte arrays — and maps it to a fixed size output. Usually, output is also a byte array of the fixed size, but writing each byte as two hexadecimal digits we get, well, string of hexadecimal digits.
+
+Obviously, not every hash function is a good one. Some "outdated" hash function like MD5 shouldn't be used because very smart people have found some vulnerabilities in them. Today we can use either SHA2 or SHA3, and each of them has few output size options, e.g. SHA3-256 — number 3 can be considered as a version and 256 is that size in bits. SHA-256 is the same as SHA2-256, but SHA-256 differs from SHA3-256.
+
+OK, just to check that we are on the same page — how many hex digits will take SHA3-512("input")?
+
+...
+512 bits are 64 bytes and each byte is written as two hex digits, so the length is 128 hex digits. In fact, it's exactly 27e49fdbf7003838f33706d18f51fb3a454218de54fab41cac16ac5fcce4972f37ac2aec63c84d8da744d12d2cc94dbdde246fb5e485b882f047d3189a09c74a, but it's not important right now.
+
+There are several important properties of a good hash function:
+
+* it's absolutely deterministic - given the same input, it should always produce the same output;
+
+* it has the good "diffusion" - even a small change in the input should lead to a significant change in the output;
+
+* it has so called "collision resistance" - it's really, really difficult to find two inputs that produce the same output.
+
+And some other properties as well, e.g., the hash function should be computationally efficient and not take too much time to compute a hash value, but it's not important right now.
+
+OK, just to check that we are on the same page — how alike would be the values of SHA3-256("message") and SHA3-256("massage")?
+
+...
+They differ a lot. Their values are 7f4a23d90de90d100754f82d6c14073b7fb466f76fd1f61b187b9f39c3ffd895 and 42479c93284509f9b3be8c62a64e9d212fac93ed20f832d7963bb2a2a967563b — they differ at every byte. In fact, they differ at 122 bits of total 256 and that's really close to a random distribution of bits. 
+
+OK, so what?
+
+Hash functions have a lot of applications in computer science, but we are mostly interested in data integrity and authentication.
+
+How can hash function can be used for data integrity check? Let's say you downloaded a huge file and want to be sure that it's downloaded absolutely correctly. If person who put this file for downloading calculated hash function of the whole file content and send that calculated values to you, you can calculate the same hash function of the downloaded file and compare the values. If they are equal, it means that file was downloaded correctly.
+
+How can we use hash functions for authentication? There are several reasons why it's not a good idea to store user passwords as plain strings on the server. Let's say we are afraid that sinister corporate spy disguised as a janitor will be able to snitch a copy of the database backup tape from the data center. So, if some user registers as a Mary and uses "password" as a password, we can store in the database two values — name = "Mary" and SHA3-256("password") = c0067d4af4e87f00dbac63b6156828237059172d1bbeac67427345d6a9fda484.
+
+When next time Mary will try authenticate, we'll calculate hash of her password and compare it with the stored value. Everything looks A-OK, but...
+
+Sinister corporate spy can read the value c0067d4af4e87f00dbac63b6156828237059172d1bbeac67427345d6a9fda484 and find the real value of Mary's password.
+
+OK, just to check that we are on the same page - how exactly the spy can find the Mary's password?
+
+...
+Well, one of the methods is using a huge dictionary of the calculated SHA3-256 values — you may download them or use online service. Somebody some time ago used "password" string as an input to SHA3-256 function, and the calculated value was stored. 
+
+What can we do to prevent the spy from getting the password?
+
+We can add something to password before calculating the hash function — you may think of it like "straightening the password". Such something is called "salt" (there are quite a few requirements for it, e.g. it should be random, it should be long enough, it shouldn't be re-used, but it's a story for another day). So, when Mary register, we generate random sequence of 256 bits — we need to use a good pseudo-random number generator, but — you guess it right ‚ it's a story for another day — e.g.
+salt = 0e075a7c44746289754eb6155c13cb4e81f3a81e692c3ad42cf74b3bf7a723e6, and then we combine Mary's password with salt and calculate SHA3-256(password ⨁ salt).
+
+You may think of ⨁ as a simple string concatenation, but in really some hash functions are so good as we may expect and it's necessary to mix values with a little bit sophistication, but it's a story for another day (generally, use standard implementations and don't invent your own security related algorithms and you'll be safe).
+
+So, we store in the database name, salt and SHA3-256(password ⨁ salt). So, next time when Mary will try authenticate, we'll perform the same sequence of actions (using stored salt for Mary) and compare the result hashes.
+
+Unfortunately, it's not enough to sleep well, because the spy can still use brute-force attack. By getting a long enough list of popular passwords someone may just repeat this calculation for each possible password with the given salt until result hash will be equal to stored one. 
+
+OK, just to check that we are on the same page - is it feasible, can such attack be performed fast enough?
+
+...
+Yes, because hash functions can be calculated pretty quickly. They are optimized to be calculated quickly, and most of the modern CPUs have special instructions for the fast hash function calculation. And after cryptocurrency boom we know how to quickly calculate hash functions on GPUs or even specialized hardware.
+
+Is it possible to protect stored password from this kind of attack? Well, yes. We just need to slow-down the calculation of hash function. And fortunately, it's pretty easy to do just by the calculating the hash of the hash multiple times, let's say thousands of times. 
+
+Is it enough? For this day we'll consider it okayish.
+
+But wait. What is HMAC then?
+
+Rewind a little bit back. Do you remember when we spoke about "data integrity" of the big file? Let's consider a little bit more complex scenario. You have some data you want to send to the user and get back, e.g. it's some user session data and you don't want to spend your own resources to store it. Obviously, you want to check that the user didn't change anything. Is it possible to use hash function to ensure data integrity? You may send not only the data, but also the value of the hash function of the data. Unfortunately, the user can change the data, calculate hash function for itself and return back to you modified data and the new hash function value.
+
+In this scenario it would be nice to have somehow "customized" hash function that only we can calculate, right?
+
+Easy-peasy. We generate — using cryptographically secure PRNG long enough sequence of bits, yada yada yada — a secret key. Mix it with our data (usually, such data are called a "message") and calculate hash function of the result. And so we get an HMAC (hash-based message authentication code). So, we store this secret key and send data and HMAC to the user. The user can even read the data, but if he or she modifies it, we well know about it when we'll get back data and HMAC — it's impossible to forge it without knowing the secret key.
+
+Generally speaking, HMAC is a function of two arguments, message and the key that returns some third value (technically, it's the value of some hash function). Again, you shouldn't implement HMAC for yourself, because there are a lot of technical details and traps for the young players.
+
+In our case, we can use HMAC to prove that computer don't cheat.
+
+First of all, the computer generates a secret key, but don't show it to the user yet. Then the computer generates its value and calculates HMAC (computer's value, secret key) and shows it to the user. At this moment the user cannot find the computer value by the HMAC only (user knows all the possible moves, but without the secret key it's very difficult to find anything about the message). After the user have generated its value, the computer displays the secret key and after that it's trivial to check that the computer value with given secret key gives exactly the HMAC shown before. And by the properties of the hash functions, it's impossible (very expensive) to generate another key that gives the same HMAC for some other value.

@@ -1,5 +1,3 @@
-@everyone 
-
 **Task #2 (ALL GROUPS)**
 
 There are some necessary skills for every programmer — process files, calculate checksums, follow the instruction, etc. This task will help to train that.
