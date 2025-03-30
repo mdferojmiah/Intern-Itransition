@@ -1,0 +1,245 @@
+@model UserManagement.Models.UserViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="mb-3">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="btn-group" role="group">
+                <button type="button" id="blockBtn" class="btn btn-primary" onclick="blockSelected()">
+                    <i class="bi bi-lock-fill"></i> Block
+                </button>
+                <button type="button" id="unblockBtn" class="btn btn-outline-primary" onclick="unblockSelected()" data-bs-toggle="tooltip" title="Unblock selected users">
+                    <i class="bi bi-unlock-fill"></i>
+                </button>
+                <button type="button" id="deleteBtn" class="btn btn-outline-danger" onclick="deleteSelected()" data-bs-toggle="tooltip" title="Delete selected users">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" id="filterInput" class="form-control" placeholder="Filter">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="width: 50px;">
+                    <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" />
+                </th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Last seen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr class="@(user.Status == "blocked" ? "text-decoration-line-through" : "")">
+                    <td>
+                        <input type="checkbox" class="user-checkbox" value="@user.Email" />
+                    </td>
+                    <td>
+                        @user.Name
+                        @if (user.Status == "blocked")
+                        {
+                            <span class="badge bg-secondary">Blocked</span>
+                        }
+                    </td>
+                    <td>@user.Email</td>
+                    <td>
+                        @if (user.LastLoginTime.HasValue)
+                        {
+                            var timeAgo = DateTime.Now - user.LastLoginTime.Value;
+                            if (timeAgo.TotalMinutes < 1)
+                            {
+                                <span>less than a minute ago</span>
+                            }
+                            else if (timeAgo.TotalMinutes < 60)
+                            {
+                                <span>@Math.Floor(timeAgo.TotalMinutes) minutes ago</span>
+                            }
+                            else if (timeAgo.TotalHours < 24)
+                            {
+                                <span>@Math.Floor(timeAgo.TotalHours) hours ago</span>
+                            }
+                            else if (timeAgo.TotalDays < 7)
+                            {
+                                <span>@Math.Floor(timeAgo.TotalDays) days ago</span>
+                            }
+                            else
+                            {
+                                <span>@Math.Floor(timeAgo.TotalDays / 7) weeks ago</span>
+                            }
+                            
+                            <div class="activity-sparkline">
+                                <!-- Placeholder for activity sparkline -->
+                                <svg width="100" height="20">
+                                    <rect x="0" y="15" width="10" height="5" fill="#ccc" />
+                                    <rect x="15" y="10" width="10" height="10" fill="#ccc" />
+                                    <rect x="30" y="5" width="10" height="15" fill="#ccc" />
+                                    <rect x="45" y="12" width="10" height="8" fill="#ccc" />
+                                    <rect x="60" y="17" width="10" height="3" fill="#ccc" />
+                                    <rect x="75" y="8" width="10" height="12" fill="#ccc" />
+                                    <rect x="90" y="14" width="10" height="6" fill="#ccc" />
+                                </svg>
+                            </div>
+                        }
+                        else
+                        {
+                            <span>Never logged in</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Hidden forms for POST actions -->
+<form id="blockForm" asp-action="Block" method="post">
+    <div id="blockSelectedUsers"></div>
+</form>
+
+<form id="unblockForm" asp-action="Unblock" method="post">
+    <div id="unblockSelectedUsers"></div>
+</form>
+
+<form id="deleteForm" asp-action="Delete" method="post">
+    <div id="deleteSelectedUsers"></div>
+</form>
+
+@section Scripts {
+    <script>
+        // Enable tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Toggle select all checkboxes
+        function toggleSelectAll() {
+            var checkboxes = document.getElementsByClassName('user-checkbox');
+            var selectAllCheckbox = document.getElementById('selectAll');
+            
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = selectAllCheckbox.checked;
+            }
+        }
+        
+        // Block selected users
+        function blockSelected() {
+            var checkboxes = document.getElementsByClassName('user-checkbox');
+            var selectedUsers = [];
+            
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selectedUsers.push(checkboxes[i].value);
+                }
+            }
+            
+            if (selectedUsers.length === 0) {
+                alert('Please select at least one user.');
+                return;
+            }
+            
+            var container = document.getElementById('blockSelectedUsers');
+            container.innerHTML = '';
+            
+            for (var i = 0; i < selectedUsers.length; i++) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedEmails';
+                input.value = selectedUsers[i];
+                container.appendChild(input);
+            }
+            
+            document.getElementById('blockForm').submit();
+        }
+        
+        // Unblock selected users
+        function unblockSelected() {
+            var checkboxes = document.getElementsByClassName('user-checkbox');
+            var selectedUsers = [];
+            
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selectedUsers.push(checkboxes[i].value);
+                }
+            }
+            
+            if (selectedUsers.length === 0) {
+                alert('Please select at least one user.');
+                return;
+            }
+            
+            var container = document.getElementById('unblockSelectedUsers');
+            container.innerHTML = '';
+            
+            for (var i = 0; i < selectedUsers.length; i++) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedEmails';
+                input.value = selectedUsers[i];
+                container.appendChild(input);
+            }
+            
+            document.getElementById('unblockForm').submit();
+        }
+        
+        // Delete selected users
+        function deleteSelected() {
+            var checkboxes = document.getElementsByClassName('user-checkbox');
+            var selectedUsers = [];
+            
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selectedUsers.push(checkboxes[i].value);
+                }
+            }
+            
+            if (selectedUsers.length === 0) {
+                alert('Please select at least one user.');
+                return;
+            }
+            
+            if (!confirm('Are you sure you want to delete the selected users?')) {
+                return;
+            }
+            
+            var container = document.getElementById('deleteSelectedUsers');
+            container.innerHTML = '';
+            
+            for (var i = 0; i < selectedUsers.length; i++) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedEmails';
+                input.value = selectedUsers[i];
+                container.appendChild(input);
+            }
+            
+            document.getElementById('deleteForm').submit();
+        }
+        
+        // Filter functionality
+        $(document).ready(function() {
+            $("#filterInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("table tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}

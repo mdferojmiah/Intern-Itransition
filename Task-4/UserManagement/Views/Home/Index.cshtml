@@ -1,0 +1,20 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to User Management System</h1>
+    
+    @if (Context.Session.GetString("UserEmail") != null)
+    {
+        <p>You are currently logged in. Go to the <a asp-controller="Users" asp-action="Index">User Dashboard</a>.</p>
+    }
+    else
+    {
+        <p>Please <a asp-controller="Account" asp-action="Login">login</a> to access the system or <a asp-controller="Account" asp-action="Register">register</a> if you don't have an account.</p>
+    }
+</div>
