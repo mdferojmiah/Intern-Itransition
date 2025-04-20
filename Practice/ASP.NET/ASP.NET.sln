@@ -2,6 +2,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJokesApp", "MyJokesApp\MyJokesApp.csproj", "{95AF9054-984A-1D6A-8772-3882FF88FC9B}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{8D6B33C5-CEE1-20B5-A207-99CBB61F699C}"
 EndProject
 Global
@@ -10,6 +12,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95AF9054-984A-1D6A-8772-3882FF88FC9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95AF9054-984A-1D6A-8772-3882FF88FC9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95AF9054-984A-1D6A-8772-3882FF88FC9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95AF9054-984A-1D6A-8772-3882FF88FC9B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8D6B33C5-CEE1-20B5-A207-99CBB61F699C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8D6B33C5-CEE1-20B5-A207-99CBB61F699C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D6B33C5-CEE1-20B5-A207-99CBB61F699C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -19,6 +25,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {885A9712-A396-408D-8824-09832CEC2612}
+		SolutionGuid = {0A38015F-F888-4938-A90E-4B86723596F2}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,26 @@
+@model MyJokesApp.Models.Item
+@{
+    ViewData["Title"] = "Overview";
+
+    var greetMsg = "Welcome!!!";
+    var oldUser = true;
+
+    var list = new List<string>{"one", "two", "three"};
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if(oldUser){
+    <p>Welcome Back!!!</p>
+}else {
+    <p>@greetMsg</p>
+}
+
+<div>
+    <p>The item name is: <b>@Model.Name</b></p>
+    <ul>
+        @foreach(string item in list){
+            <li>@item</li>
+        }
+    </ul>
+</div>
