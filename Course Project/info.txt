@@ -1,0 +1,82 @@
+Here are some explaining about optimistic locking used everywhere. It's a good topic for discussion during the interview – how to implement correct workflow for multiple users. But I post it here, because you will need it in your course projects.
+
+You need to understand how it works to be able to implement _the correct behavior for end users_.
+
+**What is optimistic locking?**
+
+A long time ago, when computers were big, the "standard" approach was the following:
+```
+[Client 1]-read/write
+                     \
+[Client 2]-read/write->[Database]
+                     /
+[Client 3]-read/write
+```
+Clients were written in C++ or Delphi, were "fat," were able to render complex UI, etc.
+
+Let's assume that our application allows managing a dog shelter and contains the following "[dogs]" table:
+```
++----+---------+------------|--------+------------+-----------+-------+
+| id |  name   |  accepted  | gender | vaccinated |   breed   | owner |
++----+---------+------------+--------+------------+-----------+-------+
+|  1 | Hodge   | 1094058900 | F      |          0 | dachshund |  NULL |
+|  2 | Hodge 2 | 1171950300 | M      |          0 | dachshund |  NULL |
+|  3 | Stitch  | 1024228800 | M      |          1 | collie    |    17 |
++----+---------+------------|--------+------------+-----------+-------+
+```
+Of course, when multiple clients work with the same data, conflicts may arise. For example, "Client 1" loads a record with `id=1` and looks up the owner. From the other machine, "Client 2" opens the same record, checks the "Vaccinated" checkbox, and saves the form with the new value for the `[vaccinated]` field. When "Client 1" finishes drinking its coffee and saves the form with the set owner, he or she rewrites the `[vaccinated]` field back to `0`.
+
+Not good.
+
+You may think about updating only _changed_ fields, but it doesn't really help—sometimes users edit the same fields, e.g., incrementing a numeric value, I don't know, `[incidents]` or something. Also, it would compicate implementation quite a lot.
+
+Of course, _transactions_ doesn't help here much because the time between opening the form for editing and saving data is too long. Theoretically, we may think about transaction at least in the old two-tier architectures, but practically it was close to impossible even there. Loading data to show in the form and saving data after the updat are two separate queries, separated by arbitrarily long periods of time.
+
+So, we need to "lock" records somehow. So, we add two fields into the table, `[locked_by]` and `[locked_at]`. If "Client 1" opens the record for editing, we check the `[locked_by]` and if there is the `NULL` value, we save the client id into `[locked_by]` and the current timestamp into `[locked_at]`. When the other clients try to open the same records, they won't be able to do so because the field `[locked_by]` is not `NULL` (and clients should get a corresponding message in the UI). Of course, when "Client 1" saves the data, the `[locked_by]` field is reset back to the `NULL` value.
+
+Well, it's called "pessimistic locking," and it worked pretty well many years ago. However, there are problems with this approach:
+1. It requires the database modification exactly two times, even if the user clicks the "Cancel" button (and database writes are much more difficult to scale than database reads).
+2. It makes nice modern in-place in-table editing impossible from the practical point of view—we need to lock the whole table.
+3. We need to implement "forced unlocking" functionality, both by timeout and by admin or power users (e.g., a user who locked the record is unavailable, went for a coffee, is sick, or is dead).
+4. So, it means that we still have to process the "locked record was unlocked by someone else" case, implement corresponding messages, etc.
+
+Just as a note, the problem isn't only in update operations; delete operations are also problematic—when you analyze a record and decide to delete it, you don't want to delete changed values you didn't see, right? RIGHT?
+
+Today, applications are often "architected" in a different way.
+```
+[Client 1]->[Server 1]---read--->[Read-only DB replica]
+                      \                    ^
+[Client 2]             --write---     replication
+          \                      \         |
+           >[Server 2]-read/write->[Primary database]
+          /
+[Client 3]
+```
+Now we can forget about even the possibility of transactions across multiple tiers (of course, the transactions ***must*** be used on the server to perform "complex" tasks consisting of multiple queries, like transfering values from one entity to another).
+
+Fortunately, in modern applications, the following conditions are usually true:
+1) Reads occurs much more often than writes (people read reviews more frequently than write them). Some streams of writes, like logging, can be "redirected" to separate storage, optimized for fast inserts.
+2) The same records are edited by the different users very rarely (it's possible, but such cases are kind of exceptional). We may assume that records are unlikely to change before the update or delete operation.
+
+It means that we can use so-called optimistic locking. When we read a record to show on the UI, we do nothing—you like it already, right? But when we update or delete that record, we check whether the record was changed in the time passed since the read operation.
+
+How?
+
+There are several strategies.
+
+1. We can replace the typical `WHERE id=1` clause in the `UPDATE` and `DELETE` queries with the condition for all the editable fields, e.g., `WHERE id=1 AND accepted=1094058900 AND gender='F' AND vaccinated=0 AND breed='dachshund' AND owner IS NULL`. Remember, you don't concatenate SQL queries manually—it's a [road straight to hell](https://en.wikipedia.org/wiki/SQL_injection)). This approach is bulky; we need to send a copy of the original data back through all the layers, but the advantage is that we don't modify the database scheme at all.
+1. We add an additional `version` field and update it in every `UPDATE`. The `WHERE` clause becomes `WHERE id=1 AND version=42`. It's pretty simple. What type can be used for the version field? There are a lot of options with pluses and minuses:
+  * A numerical field that is incremented in every `UPDATE`; it's easy to debug the history of changes, but you need to modify the `SET` part of the `UPDATE`.
+  * A timestamp field that is automatically updated when a record is changed; it works pretty "automagically."
+  * A GUID field that is re-generated for every update; it's more difficult to debug and it's slower, but it allows easy data merging from multiple cluster nodes.
+
+Well, this is called optimistic locking. Of course, you need some client code that will process situations when an update or delete operation fails to find any record to modify (reload data and show a message with the proposition to try again; in real applications, you may be forced to preserve data entered by the user and implement some merging interface).
+
+Of course, it's a pretty standard mechanism, and ORM usually takes care of the _most_ of it (but it cannot show proper messages to the user).
+
+Please note that everything written above should not be used as an instruction "do it all"; you don't need multiple databases, any kind of replication in your tiny projects, merging, etc. But you'll need _optimistic locking_.
+
+Note, that the optimistic locking is not a task for mythical "exclusively front-end" developers or mythical "exclusively back-end" developers. Unfortunately (or fortunately, depending whether you hate your job or love it) it's one of the cross-cutting tasks that should be implemented across "layers". You cannot have some API that "hides" locking from "front" or "back", because:
+1. you need to pass some kind of versions (see above) to API,
+1. you need to show proper messages, resolve conflicts or provide reload/retry functionality for the end-user, etc.
+Also, you don't "encapsulate" optimistic locking on the "higher" layers, because you need to "synchronise" different versions somehow.

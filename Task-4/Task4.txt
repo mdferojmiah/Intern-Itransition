@@ -43,7 +43,7 @@ YOU STORAGE SHOULD GUARANTEE ***E-MAIL*** UNIQUENESS INDEPENDENTLY OF HOW MANY S
 Note that a _unique index_ is not the same as a _primary key_ (which you should have too):
 https://en.wikipedia.org/wiki/Database_index
 
-Generally, you can use any "architecture", either implement a classic Web-application with a server and a database or separate front from back. It's not important in this task. Generally, it's the most simple and straightforward to use a relational DB, e.g. PostgreSQL or MySQL. You can, if you wish, use anything else. E.g., MongoDB, but it really won't give you any advantage in this task (you just deprive yourself a very major skill). But you can. Or you can even try use some SaaS like Firebase. But be careful, you easily will get into some troubles. E.g.,  if you decide to use "out-of-the-box" users, it may be problematic to delete them. If you decide to use custom "users", you may have some problems with maintaining uniquieness of e-mails, etc. I have to remind, that you code can contain only error processing and management of uniqueness have to be performed on the storage level, but you code shouldn't contain checks whether the e-mail already exists. Arguably, the simplest solution is to use a classic boring "trivial" relational database. But even in Firebase you may try to create documents that uses e-mails as keys (again, it limits you ability to change e-mail by user request, etc.).
+Generally, you can use any "architecture", either implement a classic Web-application with a server and a database or separate front from back. It's not important in this task. Generally, it's the most simple and straightforward to use a relational DB, e.g. PostgreSQL or MySQL. You can, if you wish, use anything else. E.g., MongoDB, but it really won't give you any advantage in this task (you just deprive yourself a very major skill). But you can. Or you can even try use some SaaS like Firebase. But be careful, you easily will get into some troubles. E.g.,  if you decide to use "out-of-the-box" users, it may be problematic to delete them. If you decide to use custom "users", you may have some problems with maintaining uniqueness of e-mails, etc. I have to remind, that you code can contain only error processing and management of uniqueness have to be performed on the storage level, but you code shouldn't contain checks whether the e-mail already exists. Arguably, the simplest solution is to use a classic boring "trivial" relational database. But even in Firebase you may try to create documents that uses e-mails as keys (again, it limits you ability to change e-mail by user request, etc.).
 
 
 NO WALLPAPERS UNDER THE TABLE. NO ANIMATIONS. NO BROWSER ALERTS. NO BUTTONS IN THE DATA ROWS.
@@ -55,7 +55,7 @@ DON'T INVENT ANYTHING, USE LIBRARIES FOR EVERYTHING.
 Implement:
 1. adequate error messages;
 1. tooltips;
-1. status messages (informing user about succesful operation).
+1. status messages (informing user about successful operation).
 
 If you use N buttons (separate set of buttons for each row), the grade will be reduced by 20%. You need to implement selection and a toolbar. And align text properly in the cells (check the screenshot below).
 
@@ -64,7 +64,7 @@ If you use N buttons (separate set of buttons for each row), the grade will be r
 
 **About #4**
 
-Users shouldn't be "kicked" _right away_. They should be "kicked" when they try to perform some action. For example, if I look at user list while somebody else blocked me (or I block itself from other browser), I can continue to stare at the users list as long as I want. But if I try to block or unblock somebody, I must be redirected to login page with the correspoding notification. You have to check before any server request that user exists and isn't blocked.
+Users shouldn't be "kicked" _right away_. They should be "kicked" when they try to perform some action. For example, if I look at user list while somebody else blocked me (or I block itself from other browser), I can continue to stare at the users list as long as I want. But if I try to block or unblock somebody, I must be redirected to login page with the corresponding notification. You have to check before any server request that user exists and isn't blocked.
 
 
 
@@ -74,7 +74,7 @@ Send to p.lebedev@itransition.com:
 * Full name.
 * Link to source code in the public repository.
 * _Link to the deployed project_ (you can use any hosting you find suitable — azure, amazon, render, somee, vercel, netlify, _anything_).
-* Recorded video: registration, login, non-current user selection, user blocking (the user status should be updated), user unblocking, all user selection (including current), all user blocking (with automatic redirection to the login page), demonstration of the index created in the database (if you use storage that doesn't support indices, demonstrate the solution using  documents with e-mail as keys or some kind of triggers – any solution that will _guarantee_ consitency on the storage level). 
+* Recorded video: registration, login, non-current user selection, user blocking (the user status should be updated), user unblocking, all user selection (including current), all user blocking (with automatic redirection to the login page), demonstration of the index created in the database (if you use storage that doesn't support indices, demonstrate the solution using  documents with e-mail as keys or some kind of triggers – any solution that will _guarantee_ consistency on the storage level). 
 
 PLEASE, MAKE SURE THAT YOUR VIDEO CONTAINS DEMONSTRATION OF THE INDEX IN THE DATABASE AS WELL AS PLACE IN THE CODE THAT CATCHES THE CORRESPONING ERROR AND SHOW AN APPROPRIATE MESSAGE. IF YOU USE SOME STORAGE NOT VERY SUITED FOR THIS TASKS THAT DOESN'T SUPPORT INDICES, DEMONSTRATE YOUR TRIGGERS OR DOCUMENTS THAT USES E-MAILS AS KEYS, ETC. If you ignore this requirement or implement it by checking if e-mail exists in the database by your code, the solution won't be accepted.
 
