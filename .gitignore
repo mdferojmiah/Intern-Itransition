@@ -1,1 +1,9 @@
 .vs/
+appsettings.json
+appsettings.Development.json
+bin/
+obj/
+src/
+*.sln.ide
+*.sln.docstates
+.config/
