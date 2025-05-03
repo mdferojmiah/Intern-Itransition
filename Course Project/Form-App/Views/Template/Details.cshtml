@@ -1,0 +1,73 @@
+﻿@model Form_App.Models.TemplateViewModel
+@{
+    ViewData["Title"] = "Template Details";
+    var isAdmin = User.IsInRole("Admin");
+    var isCreator = User.Identity?.Name == Model.CreatorName;
+}
+
+<h1>Template Details</h1>
+<div class="mb-3">
+    <label class="form-label fw-bold">Title:</label>
+    <p>@Model.Title</p>
+</div>
+<div class="mb-3">
+    <label class="form-label fw-bold">Description:</label>
+    <p>@Model.Description</p>
+</div>
+<div class="mb-3">
+    <label class="form-label fw-bold">Is Public:</label>
+    <p>@(Model.IsPublic ? "Yes" : "No")</p>
+</div>
+<div class="mb-3">
+    <label class="form-label fw-bold">Creator:</label>
+    <p>@Model.CreatorName</p>
+</div>
+<div class="mb-3">
+    <label class="form-label fw-bold">Created On:</label>
+    <p>@Model.CreationDate</p>
+</div>
+
+@if (isCreator || isAdmin)
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Template</a>
+}
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+<hr />
+<h2>Questions</h2>
+@if (Model.Questions != null && Model.Questions.Any())
+{
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Show in Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var question in Model.Questions.OrderBy(q => q.OrderIndex))
+            {
+                <tr>
+                    <td>@question.OrderIndex</td>
+                    <td>@question.Title</td>
+                    <td>@question.Description</td>
+                    <td>@question.QuestionType</td>
+                    <td>@(question.ShowInResults ? "Yes" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No questions found for this template.</p>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

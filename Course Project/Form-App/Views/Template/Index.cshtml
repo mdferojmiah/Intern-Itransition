@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Form_App.Models.TemplateViewModel>
+@{
+    ViewData["Title"] = "Templates";
+    var isAdmin = User.IsInRole("Admin");
+}
+<h1>Templates</h1>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New Template</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Public</th>
+            <th>Creator</th>
+            <th>Created On</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var template in Model)
+        {
+            <tr>
+                <td>@template.Title</td>
+                <td>@template.Description</td>
+                <td>@(template.IsPublic ? "Yes" : "No")</td>
+                <td>@template.CreatorName</td>
+                <td>@template.CreationDate</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@template.Id" class="btn btn-info btn-sm">Details</a>
+                    @if (User.Identity?.Name == template.CreatorName || isAdmin)
+                    {
+                        <a asp-action="Edit" asp-route-id="@template.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@template.Id" class="btn btn-danger btn-sm">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

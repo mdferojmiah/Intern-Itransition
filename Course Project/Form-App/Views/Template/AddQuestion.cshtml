@@ -1,0 +1,48 @@
+﻿@model Form_App.Models.CreateQuestionViewModel
+@using Form_App.Entity.Enums
+@{
+    ViewData["Title"] = "Add Question";
+}
+
+<h1>Add Question</h1>
+
+<form asp-action="AddQuestion">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="TemplateId" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="QuestionType" class="form-label"></label>
+        <select asp-for="QuestionType" asp-items="Html.GetEnumSelectList<QuestionType>()" class="form-control">
+            <option value="">-- Select Question Type --</option>
+        </select>
+        <span asp-validation-for="QuestionType" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="ShowInResults" class="form-check-input" />
+        <label asp-for="ShowInResults" class="form-check-label"></label>
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Edit" asp-route-id="@Model.TemplateId" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

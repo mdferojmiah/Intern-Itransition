@@ -1,0 +1,75 @@
+﻿@model Form_App.Models.EditTemplateViewModel
+@{
+    ViewData["Title"] = "Edit Template";
+}
+<h1>Edit Template</h1>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsPublic" class="form-check-input" />
+        <label asp-for="IsPublic" class="form-check-label">Make Public</label>
+    </div>
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+<hr />
+<h2>Questions</h2>
+<a asp-action="AddQuestion" asp-route-id="@Model.Id" class="btn btn-primary mb-3">Add New Question</a>
+@if (Model.Questions != null && Model.Questions.Any())
+{
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Show in Results</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var question in Model.Questions.OrderBy(q => q.OrderIndex))
+            {
+                <tr>
+                    <td>@question.OrderIndex</td>
+                    <td>@question.Title</td>
+                    <td>@question.Description</td>
+                    <td>@question.QuestionType</td>
+                    <td>@(question.ShowInResults ? "Yes" : "No")</td>
+                    <td>
+                        <a asp-action="EditQuestion" asp-route-id="@question.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <form asp-action="DeleteQuestion" method="post" asp-route-id="@question.Id" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this question?');">Delete</button>
+                        </form>
+                        <form asp-action="MoveQuestionUp" method="post" asp-route-id="@question.Id" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-secondary">↑</button>
+                        </form>
+                        <form asp-action="MoveQuestionDown" method="post" asp-route-id="@question.Id" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-secondary">↓</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No questions added yet.</p>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
