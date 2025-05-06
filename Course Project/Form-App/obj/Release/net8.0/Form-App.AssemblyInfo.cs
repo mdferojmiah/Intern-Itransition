@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Form-App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+573096c2721fba5455dda8ff9877c777c75b9a9d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a2eeb588f1a9fda8e695c29b9cc3f9476383f2c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Form-App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Form-App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

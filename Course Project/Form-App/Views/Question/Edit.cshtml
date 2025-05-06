@@ -1,13 +1,14 @@
-﻿@model Form_App.Models.CreateQuestionViewModel
+﻿@model Form_App.Models.EditQuestionViewModel
 @using Form_App.Entity.Enums
 @{
-    ViewData["Title"] = "Add Question";
+    ViewData["Title"] = "Edit Question";
 }
 
-<h1>Add Question</h1>
+<h1>Edit Question</h1>
 
-<form asp-action="AddQuestion">
+<form asp-controller="Question" asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="TemplateId" />
 
     <div class="mb-3">

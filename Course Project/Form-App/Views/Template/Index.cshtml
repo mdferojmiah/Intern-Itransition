@@ -5,7 +5,7 @@
 }
 <h1>Templates</h1>
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create New Template</a>
+    <a class="btn btn-primary" asp-controller="Template" asp-action="Create">Create New Template</a>
 </p>
 <table class="table table-striped">
     <thead>
@@ -28,11 +28,11 @@
                 <td>@template.CreatorName</td>
                 <td>@template.CreationDate</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@template.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-controller="Template" asp-action="Details" asp-route-id="@template.Id" class="btn btn-info btn-sm">Details</a>
                     @if (User.Identity?.Name == template.CreatorName || isAdmin)
                     {
-                        <a asp-action="Edit" asp-route-id="@template.Id" class="btn btn-warning btn-sm">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@template.Id" class="btn btn-danger btn-sm">Delete</a>
+                        <a asp-controller="Template" asp-action="Edit" asp-route-id="@template.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-controller="Template"  asp-action="Delete" asp-route-id="@template.Id" class="btn btn-danger btn-sm">Delete</a>
                     }
                 </td>
             </tr>
