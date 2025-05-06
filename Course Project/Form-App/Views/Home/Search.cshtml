@@ -1,0 +1,66 @@
+﻿@model Form_App.Models.SearchViewModel
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Search Results for "@Model.Query"</h1>
+            <p class="text-muted">Found @Model.Results.Count template@(Model.Results.Count != 1 ? "s" : "")</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col">
+            <form asp-action="Search" method="get" class="d-flex">
+                <input type="text" name="query" class="form-control me-2" value="@Model.Query" placeholder="Search templates...">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.Results.Any())
+    {
+        <div class="row">
+            @foreach (var template in Model.Results)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@template.Title</h5>
+                            <p class="card-text">
+                                @(template.Description?.Length > 150
+                                    ? template.Description.Substring(0, 150) + "..."
+                                    : template.Description)
+                            </p>
+                            <p class="text-muted small">
+                                By @template.Creator.UserName on @template.CreationDate.ToString()
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <a asp-controller="Template" asp-action="Details" asp-route-id="@template.Id"
+                               class="btn btn-sm btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <h4 class="alert-heading">No Results Found</h4>
+            <p>We couldn't find any templates matching your search for "@Model.Query".</p>
+            <hr>
+            <p class="mb-0">Try different keywords or check out our <a asp-action="Index">latest templates</a>.</p>
+        </div>
+    }
+
+    <div class="row mt-3">
+        <div class="col text-center">
+            <a asp-action="Index" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿@model Form_App.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h1 class="h4 mb-0">Error</h1>
+                </div>
+                <div class="card-body">
+                    <h2 class="text-danger">An error occurred while processing your request.</h2>
+
+                    @if (Model.ShowRequestId)
+                    {
+                        <p>
+                            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                        </p>
+                    }
+
+                    <div class="mt-4">
+                        <h3>What can you do?</h3>
+                        <ul>
+                            <li>Return to the <a asp-controller="Home" asp-action="Index">Homepage</a></li>
+                            <li>Try again later if the issue persists</li>
+                            <li>Contact support if you continue experiencing problems</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

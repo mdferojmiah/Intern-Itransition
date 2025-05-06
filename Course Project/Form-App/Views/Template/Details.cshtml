@@ -30,8 +30,12 @@
 @if (isCreator || isAdmin)
 {
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Template</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to Templates</a>
+}else
+{
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a>
 }
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
 
 <hr />
 <h2>Questions</h2>

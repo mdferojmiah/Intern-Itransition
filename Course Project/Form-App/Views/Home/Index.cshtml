@@ -1,8 +1,105 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Form_App.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-4">Welcome to Forms App</h1>
+            <p class="lead">Create, share, and manage forms with our easy-to-use platform.</p>
+        </div>
+        <div class="col-md-4">
+            <form asp-action="Search" method="get" class="d-flex">
+                <input type="text" name="query" class="form-control me-2" placeholder="Search templates...">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Latest Templates</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.LatestTemplates.Any())
+                    {
+                        <div class="row">
+                            @foreach (var template in Model.LatestTemplates)
+                            {
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@template.Title</h5>
+                                            <p class="card-text small">
+                                                @(template.Description?.Length > 100
+                                                    ? template.Description.Substring(0, 100) + "..."
+                                                    : template.Description)
+                                            </p>
+                                            <p class="text-muted small">
+                                                By @template.Creator.UserName on @template.CreationDate.ToString()
+                                            </p>
+                                        </div>
+                                        <div class="card-footer bg-white">
+                                            <a asp-controller="Template" asp-action="Details" asp-route-id="@template.Id"
+                                               class="btn btn-sm btn-outline-primary">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No public templates available at the moment.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Popular Templates</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.PopularTemplates.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var template in Model.PopularTemplates)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a asp-controller="Template" asp-action="Details" asp-route-id="@template.Id"
+                                           class="text-decoration-none">
+                                            @template.Title
+                                        </a>
+                                        <p class="text-muted small mb-0">By @template.Creator.UserName</p>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">
+                                        @template.Forms.Count filled
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No popular templates available at the moment.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Create Your Own</h5>
+                    <p class="card-text">Start building your own custom form templates today.</p>
+                    <a asp-controller="Template" asp-action="Create" class="btn btn-primary">Create Template</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
