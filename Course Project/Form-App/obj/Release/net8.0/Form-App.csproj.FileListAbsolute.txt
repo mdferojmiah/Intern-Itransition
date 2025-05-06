@@ -57,7 +57,6 @@ C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\ne
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\Mono.TextTemplating.dll
-C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\MySqlConnector.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\Newtonsoft.Json.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\NuGet.Common.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\NuGet.Configuration.dll
@@ -68,7 +67,6 @@ C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\ne
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\NuGet.ProjectModel.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\NuGet.Protocol.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\NuGet.Versioning.dll
-C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\System.CodeDom.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\System.Composition.AttributedModel.dll
 C:\Users\01fer\Desktop\Intern-Itransition\Course Project\Form-App\bin\Release\net8.0\System.Composition.Convention.dll
